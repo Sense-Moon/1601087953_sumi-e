@@ -181,9 +181,13 @@
                     document.getElementById('audio').play();
                 }, 1000);
             }
-            if (oldMinutes !== minutes) {
-                document.body.style.backgroundImage = 'url(bg/' + Math.floor(Math.random() * 117) + '.png)';
-            }
+if (oldMinutes !== minutes) {
+    var img = new Image();
+    img.src = 'bg/' + Math.floor(Math.random() * 117) + '.png';
+    img.onload = function() {
+        document.body.style.backgroundImage = 'url(' + this.src + ')';
+    }
+}
             oldHoursTens = hoursTens;
             oldHoursOnes = hoursOnes;
             oldMinutesTens = minutesTens;
