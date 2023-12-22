@@ -252,24 +252,20 @@
 
         
         	// ダブルタップ禁止
-let lastTouchEnd = 0;
-let lastTouchStart = 0;
+	window.addEventListener('touchstart', function (event) {
+	    if (event.touches.length > 1) {
+	        event.preventDefault();
+	    }
+	}, { passive: false });
 
-window.addEventListener('touchstart', function (event) {
-    if (event.touches.length > 1) {
-        event.preventDefault();
-    }
-    lastTouchStart = Date.now();
-}, { passive: false });
-
-window.addEventListener('touchend', function (event) {
-    const now = Date.now();
-    if (now - lastTouchEnd <= 300 && now - lastTouchStart > 300) {
-        event.preventDefault();
-    }
-    lastTouchEnd = now;
-}, false);
-        
+	let lastTouchEnd = 0;
+	window.addEventListener('touchend', function (event) {
+	    const now = Date.now();
+	    if (now - lastTouchEnd <= 300) {
+	        event.preventDefault();
+	    }
+	    lastTouchEnd = now;
+	}, false);
         
         function playSound() {
             var audio = document.getElementById('bgm');
