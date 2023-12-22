@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<head>
+    <style>
+        @font-face {
+            font-family: 'Sumi';
+            src: url('sumi.ttf') format('truetype');
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 12vw;
+            background-color: black;
+            color: white;
+            font-family: 'Sumi';
+            background-image: url('bg/0.png');
+            background-size: cover;
+            transition: background-image 10s ease-in-out;
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+        }
+        .fade-in {
+            animation: fadeIn 1s forwards;
+        }
+        .fade-out {
+            animation: fadeOut 1s forwards;
+        }
+        @keyframes fadeIn {
+            0% {opacity: 0; transform: translateY(20px);}
+            100% {opacity: 1; transform: translateY(0);}
+        }
+        @keyframes fadeOut {
+            0% {opacity: 1; transform: translateY(0);}
+            100% {opacity: 0; transform: translateY(-20px);}
+        }
+        .fade {
+            animation: fade 2s infinite;
+        }
+        @keyframes fade {
+            0% {opacity: 1; transform: translateY(0);}
+            50% {opacity: 0; transform: translateY(-20px);}
+            100% {opacity: 1; transform: translateY(0);}
+        }
+#clock-background {
+    background-color: rgba(255, 255, 255, 0.75);
+    height:14vw;
+    border-radius: 15px;
+    width:90%;
+    position:absolute;
+    top:30%;
+}
+
+#clock {
+    text-align:center;
+}
+#hours-tens{
+    position: absolute;
+	left:10%
+}
+
+#hours-ones{
+    position: absolute;
+	left:20%
+}
+#colon-one{
+    position: absolute;
+	left:28%
+}
+#minutes-tens{
+    position: absolute;
+	left:40%
+}
+#minutes-ones{
+    position: absolute;
+	left:50%
+}
+#colon-two{
+    position: absolute;
+	left:58%
+}
+#seconds-tens{
+    position: absolute;
+	left:70%
+}
+#seconds-ones {
+    position: absolute;
+	left:80%
+}
+
+    </style>
+</head>
+<body onclick="playSound()">
+<div id="clock-background">
+    <div id="clock">
+        <div id="hours-tens" style="display: inline;"></div>
+        <div id="hours-ones" style="display: inline;"></div>
+        <div id="colon-one" style="display: inline;">：</div>
+        <div id="minutes-tens" style="display: inline;"></div>
+        <div id="minutes-ones" style="display: inline;"></div>
+        <div id="colon-two" style="display: inline;">：</div>
+        <div id="seconds-tens" style="display: inline;"></div>
+        <div id="seconds-ones" style="display: inline;"></div>
+    </div>
+</div>
+
+    <audio id="bgm" src="bgm.mp3" loop></audio>
+
+<div id="wave" onclick="createRipple(event)"></div>
+
+    <audio id="audio" src="suzu.mp3"></audio>
+    <audio id="audio2" src="sound/0.mp3"></audio>
+    <audio id="audio3" src="mizu.mp3"></audio>
+    <script>
+        var oldHoursTens = null;
+        var oldHoursOnes = null;
+        var oldMinutesTens = null;
+        var oldMinutesOnes = null;
+        var oldSecondsTens = null;
+        var oldSecondsOnes = null;
+        var oldMinutes = null;
+        function updateTime() {
+            var now = new Date();
+            var hoursTens = now.getHours().toString().padStart(2, '0').charAt(0);
+            var hoursOnes = now.getHours().toString().padStart(2, '0').charAt(1);
+            var minutesTens = now.getMinutes().toString().padStart(2, '0').charAt(0);
+            var minutesOnes = now.getMinutes().toString().padStart(2, '0').charAt(1);
+            var secondsTens = now.getSeconds().toString().padStart(2, '0').charAt(0);
+            var secondsOnes = now.getSeconds().toString().padStart(2, '0').charAt(1);
+            var minutes = now.getMinutes();
+            if (oldHoursTens !== hoursTens) {
+                document.getElementById('hours-tens').classList.add('fade-out');
+                setTimeout(function() {
+                    document.getElementById('hours-tens').textContent = hoursTens;
+                    document.getElementById('hours-tens').classList.remove('fade-out');
+                    document.getElementById('hours-tens').classList.add('fade-in');
+                }, 1000);
+            }
+            if (oldHoursOnes !== hoursOnes) {
+                document.getElementById('hours-ones').classList.add('fade-out');
+                setTimeout(function() {
+                    document.getElementById('hours-ones').textContent = hoursOnes;
+                    document.getElementById('hours-ones').classList.remove('fade-out');
+                    document.getElementById('hours-ones').classList.add('fade-in');
+                }, 1000);
+            }
+            if (oldMinutesTens !== minutesTens) {
+                document.getElementById('minutes-tens').classList.add('fade-out');
+                setTimeout(function() {
+                    document.getElementById('minutes-tens').textContent = minutesTens;
+                    document.getElementById('minutes-tens').classList.remove('fade-out');
+                    document.getElementById('minutes-tens').classList.add('fade-in');
+                }, 1000);
+            }
+			if (oldMinutesOnes !== minutesOnes) {
+			    document.getElementById('minutes-ones').classList.add('fade-out');
+			    setTimeout(function() {
+			        document.getElementById('minutes-ones').textContent = minutesOnes;
+			        document.getElementById('minutes-ones').classList.remove('fade-out');
+			        document.getElementById('minutes-ones').classList.add('fade-in');
+			        document.getElementById('audio2').src = 'sound/' + Math.floor(Math.random() * 2) + '.mp3';
+			        document.getElementById('audio2').play();
+			    }, 1000);
+			}
+            if (oldSecondsTens !== secondsTens) {
+                document.getElementById('seconds-tens').classList.add('fade-out');
+                setTimeout(function() {
+                    document.getElementById('seconds-tens').textContent = secondsTens;
+                    document.getElementById('seconds-tens').classList.remove('fade-out');
+                    document.getElementById('seconds-tens').classList.add('fade-in');
+                }, 1000);
+            }
+            if (oldSecondsOnes !== secondsOnes) {
+                document.getElementById('seconds-ones').classList.add('fade');
+                setTimeout(function() {
+                    document.getElementById('seconds-ones').textContent = secondsOnes;
+                    document.getElementById('audio').play();
+                }, 1000);
+            }
+            if (oldMinutes !== minutes) {
+                document.body.style.backgroundImage = 'url(bg/' + Math.floor(Math.random() * 117) + '.png)';
+            }
+            oldHoursTens = hoursTens;
+            oldHoursOnes = hoursOnes;
+            oldMinutesTens = minutesTens;
+            oldMinutesOnes = minutesOnes;
+            oldSecondsTens = secondsTens;
+            oldSecondsOnes = secondsOnes;
+            oldMinutes = minutes;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+    </script>
+    
+<style>
+        #wave {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 3;
+            position: absolute;
+            top: 0px;
+            opacity: 0.2;
+            overflow: hidden;
+            
+        }
+
+        .ripple {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            transform: scale(0);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: ripple 10s ease-out;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+</style>    
+
+    <script>
+        const firstIndex = 0; //最初の要素を指定するためのインデックス
+
+        //波紋を発生させるメソッド
+        function createRipple(e) {
+            const wave = e.currentTarget;
+            const circle = document.createElement('span');
+            const diameter = Math.max(wave.clientWidth, wave.clientHeight);
+            const radius = diameter / 2;
+            //クリックした位置に波紋（丸）を作る
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${e.clientX - wave.offsetLeft - radius}px`;
+            circle.style.top = `${e.clientY - wave.offsetTop - radius}px`;
+            circle.classList.add('ripple');
+            //作った波紋を要素として追加する
+            wave.appendChild(circle);
+		    var audio = new Audio('mizu.mp3');
+		    audio.play();
+
+        }
+
+        
+        	// ダブルタップ禁止
+let lastTouchEnd = 0;
+let lastTouchStart = 0;
+
+window.addEventListener('touchstart', function (event) {
+    if (event.touches.length > 1) {
+        event.preventDefault();
+    }
+    lastTouchStart = Date.now();
+}, { passive: false });
+
+window.addEventListener('touchend', function (event) {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300 && now - lastTouchStart > 300) {
+        event.preventDefault();
+    }
+    lastTouchEnd = now;
+}, false);
+        
+        
+        function playSound() {
+            var audio = document.getElementById('bgm');
+            audio.play();
+        }
+        
+    </script>
+    
+</body>
+</html>
